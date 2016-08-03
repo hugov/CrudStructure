@@ -1,0 +1,318 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+
+function panelEtapa3(){
+
+	var valorComumText = new Ext.Panel({
+        layout: 'column',
+        border: false,
+        defaults: {
+            layout: 'form',
+            border: false,
+            style: 'margin:0;padding:0',
+            bodyStyle: 'margin:0'
+        },
+        items: [{
+            columnWidth: .5,
+            items: [{
+                id: 'valorMinimo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMinimoComum'
+            }]
+        }, {
+            columnWidth: .5,
+            items: [{
+                id: 'valorMaximo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMaximoComum'
+            }]
+        }]
+    
+    });
+    
+    var valorCotaText = new Ext.Panel({
+        layout: 'column',
+        border: false,
+        defaults: {
+            layout: 'form',
+            border: false,
+            style: 'margin:0;padding:0',
+            bodyStyle: 'margin:0'
+        },
+        items: [{
+            columnWidth: .5,
+            items: [{
+                id: 'valorMinimo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMinimoCota'
+            }]
+        }, {
+            columnWidth: .5,
+            items: [{
+                id: 'valorMaximo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMaximoCota'
+            }]
+        }]
+    
+    });
+    
+    var valorValeTransporteText = new Ext.Panel({
+        layout: 'column',
+        border: false,
+        defaults: {
+            layout: 'form',
+            border: false,
+            style: 'margin:0;padding:0',
+            bodyStyle: 'margin:0'
+        },
+        items: [{
+            columnWidth: .5,
+            items: [{
+                id: 'valorMinimo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMinimoValeTransporte'
+            }]
+        }, {
+            columnWidth: .5,
+            items: [{
+                id: 'valorMaximo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMaximoValeTransporte'
+            }]
+        }]
+    
+    });
+    
+    var valorUnitarioText = new Ext.Panel({
+        layout: 'column',
+        border: false,
+        defaults: {
+            layout: 'form',
+            border: false,
+            style: 'margin:0;padding:0',
+            bodyStyle: 'margin:0'
+        },
+        items: [{
+            columnWidth: .5,
+            items: [{
+                id: 'valorMinimo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMinimoUnitario'
+            }]
+        }, {
+            columnWidth: .5,
+            items: [{
+                id: 'valorMaximo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMaximoUnitario'
+            }]
+        }]
+    
+    });
+
+	var etapa3 = new Ext.Panel({
+        id: 'redeVenda-2',
+        frame: true,
+        layout: 'form',
+        border: true,
+        onSubmit: Ext.emptyFn,
+        width: 500,
+        height: 400,
+        labelWidth: 150,
+        items: [
+			new Ext.form.FieldSet({
+				title: 'Limites de carga por transação'
+                , autoHeight: true
+                , layoutConfig : { labelSeparator: '' }
+                , items: [{
+		            	id: 'valorMinimo',
+					    xtype: 'moneyfield',
+					    name: 'redeVenda.valorMinimo'
+		            }, {
+		            	id: 'valorMaximo',
+					    xtype: 'moneyfield',
+					    name: 'redeVenda.valorMaximo'
+		            }
+			  	]
+			}),
+			new Ext.form.FieldSet({
+				title: 'Limites de vendas por dia'
+                , autoHeight: true
+                , layoutConfig : { labelSeparator: '' }
+                , items: [ 
+				  	valorComumText,
+				  	valorCotaText,
+				  	valorValeTransporteText,
+				  	valorUnitarioText
+			  	]
+			})
+        ]
+    });
+	
+    return etapa3;
+
+}
+
+function panelAlterarEtapa3( registro ){
+
+	var valorComumText = new Ext.Panel({
+        layout: 'column',
+        border: false,
+        defaults: {
+            layout: 'form',
+            border: false,
+            style: 'margin:0;padding:0',
+            bodyStyle: 'margin:0'
+        },
+        items: [{
+            columnWidth: .5,
+            items: [{
+                id: 'valorMinimo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMinimoComum',
+			    value: registro.valorMinimoComum
+            }]
+        }, {
+            columnWidth: .5,
+            items: [{
+                id: 'valorMaximo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMaximoComum',
+			    value: registro.valorMaximoComum
+            }]
+        }]
+    
+    });
+    
+    var valorCotaText = new Ext.Panel({
+        layout: 'column',
+        border: false,
+        defaults: {
+            layout: 'form',
+            border: false,
+            style: 'margin:0;padding:0',
+            bodyStyle: 'margin:0'
+        },
+        items: [{
+            columnWidth: .5,
+            items: [{
+                id: 'valorMinimo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMinimoCota',
+			    value: registro.valorMinimoCota
+            }]
+        }, {
+            columnWidth: .5,
+            items: [{
+                id: 'valorMaximo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMaximoCota',
+			    value: registro.valorMaximoCota
+            }]
+        }]
+    
+    });
+    
+    var valorValeTransporteText = new Ext.Panel({
+        layout: 'column',
+        border: false,
+        defaults: {
+            layout: 'form',
+            border: false,
+            style: 'margin:0;padding:0',
+            bodyStyle: 'margin:0'
+        },
+        items: [{
+            columnWidth: .5,
+            items: [{
+                id: 'valorMinimo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMinimoValeTransporte',
+			    value: registro.valorMinimoValeTransporte
+            }]
+        }, {
+            columnWidth: .5,
+            items: [{
+                id: 'valorMaximo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMaximoValeTransporte',
+			    value: registro.valorMaximoValeTransporte
+            }]
+        }]
+    
+    });
+    
+    var valorUnitarioText = new Ext.Panel({
+        layout: 'column',
+        border: false,
+        defaults: {
+            layout: 'form',
+            border: false,
+            style: 'margin:0;padding:0',
+            bodyStyle: 'margin:0'
+        },
+        items: [{
+            columnWidth: .5,
+            items: [{
+                id: 'valorMinimo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMinimoUnitario',
+			    value: registro.valorMinimoUnitario
+            }]
+        }, {
+            columnWidth: .5,
+            items: [{
+                id: 'valorMaximo',
+			    xtype: 'moneyfield',
+			    name: 'redeVenda.valorMaximoUnitario',
+			    value: registro.valorMaximoUnitario
+            }]
+        }]
+    
+    });
+
+	var etapa3 = new Ext.Panel({
+        id: 'redeVenda-2',
+        frame: true,
+        layout: 'form',
+        border: true,
+        onSubmit: Ext.emptyFn,
+        width: 500,
+        height: 400,
+        labelWidth: 150,
+        items: [
+			new Ext.form.FieldSet({
+				title: 'Limites de carga por transação'
+                , autoHeight: true
+                , layoutConfig : { labelSeparator: '' }
+                , items: [{
+		            	id: 'valorMinimo',
+					    xtype: 'moneyfield',
+					    name: 'redeVenda.valorMinimo',
+					    value: registro.valorMinimo
+		            }, {
+		            	id: 'valorMaximo',
+					    xtype: 'moneyfield',
+					    name: 'redeVenda.valorMaximo',
+					    value: registro.valorMaximo
+		            }
+			  	]
+			}),
+			new Ext.form.FieldSet({
+				title: 'Limites de vendas por dia'
+                , autoHeight: true
+                , layoutConfig : { labelSeparator: '' }
+                , items: [ 
+				  	valorComumText,
+				  	valorCotaText,
+				  	valorValeTransporteText,
+				  	valorUnitarioText
+			  	]
+			})
+        ]
+    });
+	
+    return etapa3;
+
+}

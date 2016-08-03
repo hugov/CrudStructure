@@ -1,0 +1,86 @@
+/**
+ * 
+ */
+package br.com.digicon.sbe.facades;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
+import br.com.digicon.sbe.dao.@@Entidade@@DAO;
+import br.com.digicon.sbe.throwable.DaoException;
+import br.com.digicon.sbe.throwable.FacadeException;
+import br.com.digicon.sbe.vo.@@Entidade@@;
+
+/**
+ * 
+ * @author Vitor Hugo Oliveira (hugov1983@gmail.com)
+ * 
+ */
+public class @@Entidade@@Facade {
+	
+	private static final Logger LOG = Logger.getLogger(@@Entidade@@Facade.class);
+
+	private @@Entidade@@DAO @@Objeto@@DAO;
+
+	public List<@@Entidade@@> getAll@@Entidade@@() throws FacadeException {
+		try {
+			return get@@Entidade@@DAO().findAll();
+		} catch (DaoException e) {
+			LOG.error("Erro ao obter @@Entidade@@", e);
+            throw new FacadeException("Erro ao obter @@Entidade@@", e);
+		}
+	}
+
+	public void insert@@Entidade@@(@@Entidade@@ @@Objeto@@) throws FacadeException {
+		
+		try {
+			
+			get@@Entidade@@DAO().save(@@Objeto@@);
+			
+		} catch (DaoException e) {
+			LOG.error("Erro ao inserir @@Entidade@@", e);
+            throw new FacadeException("Erro ao inserir @@Entidade@@", e);
+		}
+	}
+
+	public void update@@Entidade@@(@@Entidade@@ @@Objeto@@) throws FacadeException {
+		try {
+			get@@Entidade@@DAO().update(@@Objeto@@);
+		} catch (DaoException e) {
+			LOG.error("Erro ao alterar @@Entidade@@", e);
+            throw new FacadeException("Erro ao alterar @@Entidade@@", e);
+		}
+	}
+
+	public @@Entidade@@ get@@Entidade@@ById(@@PK@@ id) throws FacadeException {
+		try {
+			return get@@Entidade@@DAO().findById(id);
+		} catch (DaoException e) {
+			LOG.error("Erro ao obter @@Entidade@@", e);
+            throw new FacadeException("Erro ao obter @@Entidade@@", e);
+		}
+	}
+
+	public void delete@@Entidade@@(@@PK@@ [] ids) throws FacadeException {
+		@@PK@@ idAtual = null;
+		try {
+			for (@@PK@@ id : ids) {
+				idAtual = id;
+				get@@Entidade@@DAO().remove(id);
+			}
+		} catch (DaoException e) {
+			LOG.error("Erro ao remover @@Entidade@@ (id::" + idAtual + ")", e);
+            throw new FacadeException("Erro ao remover @@Entidade@@ (id::" + idAtual + ")", e);
+		}
+	}
+	
+	public @@Entidade@@DAO get@@Entidade@@DAO() {
+		return @@Objeto@@DAO;
+	}
+
+	public void set@@Entidade@@DAO(@@Entidade@@DAO @@Objeto@@DAO) {
+		this.@@Objeto@@DAO = @@Objeto@@DAO;
+	}
+
+}

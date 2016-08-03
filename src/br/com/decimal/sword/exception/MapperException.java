@@ -3,10 +3,6 @@
  */
 package br.com.decimal.sword.exception;
 
-/**
- * @author Vitor Hugo Oliveira
- *
- */
 public class MapperException extends Exception {
 	
 	private static final long serialVersionUID = 127300530837215371L;

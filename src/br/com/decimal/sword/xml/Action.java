@@ -3,10 +3,6 @@
  */
 package br.com.decimal.sword.xml;
 
-/**
- * @author Administrador
- * 
- */
 public class Action {
 
 	private String actionName;

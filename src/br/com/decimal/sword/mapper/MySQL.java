@@ -11,11 +11,15 @@ import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Vitor Hugo Oliveira
  *
  */
 public class MySQL {
+	
+	private static final Logger LOGGER = Logger.getLogger(MySQL.class);
 	
 	private String host;
     private String user;
@@ -24,14 +28,6 @@ public class MySQL {
     
     public Connection c;
     
-    /**
-     * Construtor da classe
-     * 
-     * @param host Host em que se deseja conectar 
-     * @param database Nome do database em que se deseja conectar
-     * @param user Nome do usuário
-     * @param pass Senha do usuário
-     */
     public MySQL( String host, String database, String user, String pass ) {
         this.pass = pass;
         this.user = user;
@@ -55,24 +51,20 @@ public class MySQL {
               
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            System.out.println(url);
+            LOGGER.trace(url);
             this.c = DriverManager.getConnection(url);
             isConnected = true;
         } catch( SQLException e ) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+            LOGGER.error("Não conectado !!!", e);
             isConnected = false;
         } catch ( ClassNotFoundException e ) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+        	LOGGER.error("Não conectado !!!", e);
             isConnected = false;
         } catch ( InstantiationException e ) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+        	LOGGER.error("Não conectado !!!", e);
             isConnected = false;
         } catch ( IllegalAccessException e ) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+        	LOGGER.error("Não conectado !!!", e);
             isConnected = false;
         }
         
@@ -119,14 +111,12 @@ public class MySQL {
                 if ( rs != null ) { // Verifica se a query retornou algo
                     while ( rs.next() ) {
                         // Podemos referenciar a coluna pelo índice
-                        System.out.println("Id: " + rs.getInt("id"));
-                        
-                        // Ou pelo seu nome
-                        System.out.println("Nome: " + rs.getString("nome"));
-                        System.out.println("Login: " + rs.getString("login"));
-                        System.out.println("Senha: " + rs.getString("senha"));
-                        System.out.println("Status: " + rs.getString("Status"));
-                        System.out.println("—————————-");
+                        LOGGER.debug("Id: " + rs.getInt("id"));
+                        LOGGER.debug("Nome: " + rs.getString("nome"));
+                        LOGGER.debug("Login: " + rs.getString("login"));
+                        LOGGER.debug("Senha: " + rs.getString("senha"));
+                        LOGGER.debug("Status: " + rs.getString("Status"));
+                        LOGGER.debug("—————————-");
                     }
                 }
           } catch ( SQLException e ) {

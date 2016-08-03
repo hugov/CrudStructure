@@ -1,0 +1,1107 @@
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="cadastros" extends="struts-default, json-default" namespace="/cadastros">
+
+        <interceptors>
+            <interceptor name="scopeInterceptor" class="br.com.digicon.sbe.interceptor.ScopeInterceptor" />
+            <interceptor name="cacheHeaderInterceptor" class="br.com.digicon.sbe.interceptor.CacheHeaderInterceptor" />
+ 
+            <interceptor-stack name="newDefaultStack">
+                <interceptor-ref name="scopeInterceptor" />
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="cacheHeaderInterceptor" />
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="newDefaultStack" />
+        	<action name="chaveTransporte!*" method="{1}" class="br.com.digicon.sbe.action.ChaveTransporteAction">
+	            <result name="success" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	            <result name="input" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	        </action>
+
+        	<action name="linhaServico!*" method="{1}" class="br.com.digicon.sbe.action.LinhaServicoAction">
+	            <result name="success" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	            <result name="input" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	        </action>
+
+        	<action name="mensagemTerminal!*" method="{1}" class="br.com.digicon.sbe.action.MensagemTerminalAction">
+	            <result name="success" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	            <result name="input" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	        </action>
+
+        	<action name="parametroValidador!*" method="{1}" class="br.com.digicon.sbe.action.ParametrosValidadorAction">
+	            <result name="success" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	            <result name="input" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	        </action>
+
+        	<action name="evento!*" method="{1}" class="br.com.digicon.sbe.action.EventoAction">
+	            <result name="success" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	            <result name="input" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	        </action>
+
+        	<action name="tipoLocal!*" method="{1}" class="br.com.digicon.sbe.action.TipoLocalAction">
+	            <result name="success" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	            <result name="input" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	        </action>
+
+        	<action name="localServicoUtilizacao!*" method="{1}" class="br.com.digicon.sbe.action.LocalServicoUtilizacaoAction">
+	            <result name="success" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	            <result name="input" type="json">
+	                <param name="root">
+	                    mapaRetorno
+	                </param>
+	                <param name="contentType">application/json;charset=ISO-8859-1</param>
+	                <param name="enableGZIP">true</param>
+	            </result>
+	        </action>
+
+            <action name="linha!*" method="{1}" class="br.com.digicon.sbe.action.LinhaAction">
+		            <result name="success" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		            <result name="input" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+            <action name="resumoStatusValidador!*" method="{1}" class="br.com.digicon.sbe.action.ResumoStatusValidadorAction">
+		            <result name="success" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		            <result name="input" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+		        
+		        <action name="sinalLuminoso!*" method="{1}" class="br.com.digicon.sbe.action.SinalLuminosoAction">
+		            <result name="success" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		            <result name="input" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="sinalSonoro!*" method="{1}" class="br.com.digicon.sbe.action.SinalSonoroAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="solicitacaoLoteCartao!*" method="{1}" class="br.com.digicon.sbe.action.SolicitacaoLoteCartaoAction">
+		            <result name="success" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="excludeNullProperties">true</param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		            <result name="input" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="desbloqueioTurno!*" method="{1}" class="br.com.digicon.sbe.action.DesbloqueioTurnoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="motivoBloqueioCartao!*" method="{1}" class="br.com.digicon.sbe.action.MotivoBloqueioCartaoAction">
+		            <result name="success" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		            <result name="input" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		 <action name="arquivo!*" method="{1}" class="br.com.digicon.sbe.action.ArquivoAction">
+            <result name="success" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="excludeProperties">
+                    rows.*\.blocoArquivo,
+                    arquivo.blocoArquivo
+                </param>
+                <param name="contentType">application/json;charset=ISO-8859-1</param>
+                <param name="enableGZIP">true</param>
+            </result>
+            <result name="input" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="excludeProperties">
+                    rows.*\.blocoArquivo,
+                    arquivo.blocoArquivo
+                </param>
+                <param name="contentType">application/json;charset=ISO-8859-1</param>
+                <param name="enableGZIP">true</param>
+            </result>
+        </action>
+
+        <action name="arquivo!incluir" method="incluir" class="br.com.digicon.sbe.action.ArquivoAction">
+            <result name="success" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="contentType">text/html</param>
+                <param name="enableGZIP">true</param>
+            </result>
+            <result name="input" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="contentType">text/html</param>
+                <param name="enableGZIP">true</param>
+            </result>
+        </action>
+
+        <action name="arquivo!alterar" method="alterar" class="br.com.digicon.sbe.action.ArquivoAction">
+            <result name="success" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="contentType">text/html</param>
+                <param name="enableGZIP">true</param>
+            </result>
+            <result name="input" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="contentType">text/html</param>
+                <param name="enableGZIP">true</param>
+            </result>
+        </action>
+        <action name="arquivo!listaFirmware" method="listaFirmware" class="br.com.digicon.sbe.action.ArquivoAction">
+            <result name="success" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="excludeProperties">
+                    rows.*\.ativo,
+                    rows.*\.versaoConteudo,
+                    rows.*\.descricao,
+                    rows.*\.dataCriacao,
+                    rows.*\.versaoFormato,
+                    rows.*\.dataAplicacao,
+                    rows.*\.blocoArquivo,
+                    rows.*\.prioridade,
+                    rows.*\.tipoArquivo,
+                    arquivo.ativo,
+                    arquivo.versaoConteudo,
+                    arquivo.descricao,
+                    arquivo.dataCriacao,
+                    arquivo.versaoFormato,
+                    arquivo.dataAplicacao,
+                    arquivo.blocoArquivo,
+                    arquivo.prioridade,
+                    arquivo.tipoArquivo
+                </param>
+                <param name="contentType">application/json;charset=ISO-8859-1</param>
+                <param name="enableGZIP">true</param>
+            </result>
+            <result name="input" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="excludeProperties">
+                    rows.*\.ativo,
+                    rows.*\.versaoConteudo,
+                    rows.*\.descricao,
+                    rows.*\.dataCriacao,
+                    rows.*\.versaoFormato,
+                    rows.*\.dataAplicacao,
+                    rows.*\.blocoArquivo,
+                    rows.*\.prioridade,
+                    rows.*\.tipoArquivo,
+                    arquivo.ativo,
+                    arquivo.versaoConteudo,
+                    arquivo.descricao,
+                    arquivo.dataCriacao,
+                    arquivo.versaoFormato,
+                    arquivo.dataAplicacao,
+                    arquivo.blocoArquivo,
+                    arquivo.prioridade,
+                    arquivo.tipoArquivo
+                </param>
+                <param name="contentType">application/json;charset=ISO-8859-1</param>
+                <param name="enableGZIP">true</param>
+            </result>
+        </action>
+
+
+		        <action name="distribuicao!*" method="{1}" class="br.com.digicon.sbe.action.DistribuicaoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="excludeProperties">
+                    		rows.*\.codigoArquivos,
+                    		rows.*\.codigoTerminais,
+		                    distribuicao.codigoArquivos,
+        		            distribuicao.codigoTerminais,
+                	   </param>
+                	   <param name="contentType">application/json;charset=ISO-8859-1</param>
+                	   <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="excludeProperties">
+                    		rows.*\.codigoArquivos,
+                    		rows.*\.codigoTerminais,
+		                    distribuicao.codigoArquivos,
+        		            distribuicao.codigoTerminais,
+                	   </param>
+                	   <param name="contentType">application/json;charset=ISO-8859-1</param>
+                	   <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+	    <action name="promocao!listaTreePanelVenda" method="listaTreePanelVenda" class="br.com.digicon.sbe.action.PromocaoAction">
+       		 <result name="success">/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp</result>
+       	</action>
+       	
+	    <action name="promocao!listaTreePanelVendaSelecionado" method="listaTreePanelVendaSelecionado" class="br.com.digicon.sbe.action.PromocaoAction">
+       		 <result name="success">/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp</result>
+       	</action>
+       
+        <action name="promocao!listaTreePanelPeriodoTermVenda" method="listaTreePanelPeriodoTermVenda" class="br.com.digicon.sbe.action.PromocaoAction">
+       		 <result name="success">/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp</result>
+       	</action>
+       	
+       	<action name="promocao!listaTreePanelUtilizacao" method="listaTreePanelUtilizacao" class="br.com.digicon.sbe.action.PromocaoAction">
+       		 <result name="success">/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp</result>
+       	</action>
+       	
+       	<action name="promocao!listaTreePanelUtilizacaoSelecionado" method="listaTreePanelUtilizacaoSelecionado" class="br.com.digicon.sbe.action.PromocaoAction">
+       		 <result name="success">/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp</result>
+       	</action>
+
+		<action name="distribuicao!listaFirmware" method="listaFirmware" class="br.com.digicon.sbe.action.DistribuicaoAction">
+            <result name="success" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="excludeProperties">
+                    rows.*\.ativo,
+                    rows.*\.versaoConteudo,
+                    rows.*\.nomeArquivo,
+                    rows.*\.dataCriacao,
+                    rows.*\.versaoFormato,
+                    rows.*\.dataAplicacao,
+                    rows.*\.blocoArquivo,
+                    rows.*\.prioridade,
+                    rows.*\.tipoArquivo,
+                    arquivo.ativo,
+                    arquivo.versaoConteudo,
+                    arquivo.nomeArquivo,
+                    arquivo.dataCriacao,
+                    arquivo.versaoFormato,
+                    arquivo.dataAplicacao,
+                    arquivo.blocoArquivo,
+                    arquivo.prioridade,
+                    arquivo.tipoArquivo
+                </param>
+                <param name="contentType">application/json;charset=ISO-8859-1</param>
+                <param name="enableGZIP">true</param>
+            </result>
+            <result name="input" type="json">
+                <param name="root">
+                    mapaRetorno
+                </param>
+                <param name="excludeProperties">
+                    rows.*\.ativo,
+                    rows.*\.versaoConteudo,
+                    rows.*\.nomeArquivo,
+                    rows.*\.dataCriacao,
+                    rows.*\.versaoFormato,
+                    rows.*\.dataAplicacao,
+                    rows.*\.blocoArquivo,
+                    rows.*\.prioridade,
+                    rows.*\.tipoArquivo,
+                    arquivo.ativo,
+                    arquivo.versaoConteudo,
+                    arquivo.nomeArquivo,
+                    arquivo.dataCriacao,
+                    arquivo.versaoFormato,
+                    arquivo.dataAplicacao,
+                    arquivo.blocoArquivo,
+                    arquivo.prioridade,
+                    arquivo.tipoArquivo
+                </param>
+                <param name="contentType">application/json;charset=ISO-8859-1</param>
+                <param name="enableGZIP">true</param>
+            </result>
+        </action>
+
+        <action name="distribuicao!listaTreePanel" method="listaTreePanel" class="br.com.digicon.sbe.action.DistribuicaoAction">
+        	<result name="success">/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp</result>
+        </action>
+        
+		        <action name="configuracaoAgendamento!*" method="{1}" class="br.com.digicon.sbe.action.ConfiguracaoAgendamentoAction">
+		            <result name="success" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		            <result name="input" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="tipoArquivo!*" method="{1}" class="br.com.digicon.sbe.action.TipoArquivoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+		        
+		        <action name="feriado!*" method="{1}" class="br.com.digicon.sbe.action.FeriadoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="parametrosGeraisSistema!*" method="{1}" class="br.com.digicon.sbe.action.ParametrosGeraisSistemaAction">
+		            <result name="success" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		            <result name="input" type="json">
+		                <param name="root">
+		                    mapaRetorno
+		                </param>
+		                <param name="contentType">application/json;charset=ISO-8859-1</param>
+		                <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="grupoEstacao!*" method="{1}" class="br.com.digicon.sbe.action.GrupoEstacaoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		               <param name="excludeNullProperties">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		               <param name="excludeNullProperties">true</param>
+		            </result>
+		        </action>
+
+		        <action name="grupoHorario!*" method="{1}" class="br.com.digicon.sbe.action.GrupoHorarioAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		               <param name="excludeNullProperties">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		               <param name="excludeNullProperties">true</param>
+		            </result>
+		        </action>
+		        
+		      <action name="faixaHorario!*" method="{1}" class="br.com.digicon.sbe.action.FaixaHorarioAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+				<action name="modeloTerminal!*" method="{1}" class="br.com.digicon.sbe.action.ModeloTerminalAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="excludeNullProperties">true</param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="excludeNullProperties">true</param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="terminal!*" method="{1}" class="br.com.digicon.sbe.action.TerminalAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="excludeNullProperties">true</param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="excludeNullProperties">true</param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+		        
+		        <action name="terminal!listaTreePanel" method="listaTreePanel" class="br.com.digicon.sbe.action.TerminalAction">
+       		 		<result name="success">/WEB-INF/jsp/terminal/jsonTreePanel.jsp</result>
+       			</action>
+
+		        <action name="parametroTerminal!*" method="{1}" class="br.com.digicon.sbe.action.ParametroTerminalAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="local!*" method="{1}" class="br.com.digicon.sbe.action.LocalAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="excludeNullProperties">true</param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+<!-- 		               <param name="excludeNullProperties">true</param> -->
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+		        
+		        <action name="grupoProduto!*" method="{1}" class="br.com.digicon.sbe.action.GrupoProdutoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+		        
+		        <action name="produtoVenda!*" method="{1}" class="br.com.digicon.sbe.action.ProdutoVendaAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		               <param name="excludeNullProperties">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		               <param name="excludeNullProperties">true</param>
+		            </result>
+		        </action>
+
+		        <action name="produtoVenda!listaTreePanelVenda" method="listaTreePanelVenda" class="br.com.digicon.sbe.action.ProdutoVendaAction">
+        			<result name="success">/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp</result>
+        		</action>
+
+		        <action name="produtoVenda!listaTreePanelUtilizacao" method="listaTreePanelUtilizacao" class="br.com.digicon.sbe.action.ProdutoVendaAction">
+        			<result name="success">/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp</result>
+        		</action>
+
+		        <action name="promocao!*" method="{1}" class="br.com.digicon.sbe.action.PromocaoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		       <action name="tipoCartao!*" method="{1}" class="br.com.digicon.sbe.action.TipoCartaoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		               <param name="excludeNullProperties">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		               <param name="excludeNullProperties">true</param>
+		            </result>
+		        </action>
+		        
+		        <action name="tipoCartao!listaTreePanel" method="listaTreePanel" class="br.com.digicon.sbe.action.TipoCartaoAction">
+	        		 <result name="success">
+	        		 	/WEB-INF/jsp/distribuicao/jsonDistribuicaoTreePanel.jsp
+	        		 </result>
+	        	</action>
+
+		         <action name="usuario!*" method="{1}" class="br.com.digicon.sbe.action.UsuarioAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="includeProperties">
+                    		rows.*\.idUsuario,
+                    		usuario.idUsuario,
+                    		rows.*\.nomePf,
+                    		usuario.nomePf
+                		</param>
+                		<param name="contentType">application/json;charset=ISO-8859-1</param>
+                		<param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		       <action name="layout!*" method="{1}" class="br.com.digicon.sbe.action.LayoutAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		       <action name="tDominio!*" method="{1}" class="br.com.digicon.sbe.action.TDominioAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		      <action name="grupoTipoCartao!*" method="{1}" class="br.com.digicon.sbe.action.GrupoTipoCartaoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		      <action name="diagnosticoIncidentes!*" method="{1}" class="br.com.digicon.sbe.action.DiagnosticoIncidentesAction">
+		           <result name="success" type="dispatcher"></result>
+		      </action>
+
+		      <action name="inicializacaoCartao!*" method="{1}" class="br.com.digicon.sbe.action.InicializacaoCartaoAction">
+		           <result name="success" type="dispatcher"></result>
+		      </action>
+
+  		       <action name="tarifa!*" method="{1}" class="br.com.digicon.sbe.action.TarifaAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+  		       <action name="taxa!*" method="{1}" class="br.com.digicon.sbe.action.TaxaAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="layout!*" method="{1}" class="br.com.digicon.sbe.action.LayoutAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+		        <action name="grupoFormaPagamento!*" method="{1}" class="br.com.digicon.sbe.action.GrupoFormaPagamentoAction">
+		           <result name="success" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		           </result>
+		           <result name="input" type="json">
+		               <param name="root">
+		                   mapaRetorno
+		               </param>
+		               <param name="contentType">application/json;charset=ISO-8859-1</param>
+		               <param name="enableGZIP">true</param>
+		            </result>
+		        </action>
+
+  		<action name="restricaoTipoCartao!*" method="{1}" class="br.com.digicon.sbe.action.RestricaoTipoCartaoAction">
+        	<result name="success" type="json">
+		    	<param name="root">
+		        	mapaRetorno
+		        </param>
+		        <param name="contentType">application/json;charset=ISO-8859-1</param>
+		        <param name="enableGZIP">true</param>
+		   	</result>
+   	       	<result name="input" type="json">
+		    	<param name="root">
+		        	mapaRetorno
+		        </param>
+		        <param name="contentType">application/json;charset=ISO-8859-1</param>
+		        <param name="enableGZIP">true</param>
+		    </result>
+        </action>
+
+        	  <action name="integracao!*" method="{1}" class="br.com.digicon.sbe.action.IntegracaoAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+       </action>
+
+      <action name="bloqueioCartao!*" method="{1}" class="br.com.digicon.sbe.action.BloqueioCartaoAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+       </action>
+       
+        <action name="empresaIntegracao!*" method="{1}" class="br.com.digicon.sbe.action.EmpresaIntegracaoAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+            </result>
+        </action>
+        
+        <action name="empresa!*" method="{1}" class="br.com.digicon.sbe.action.EmpresaAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+            </result>
+        </action>
+        
+        <action name="chaveDesbloqueioPDV!*" method="{1}" class="br.com.digicon.sbe.action.ChaveDesbloqueioPDVAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+            </result>
+        </action>
+        
+        <action name="elemento!*" method="{1}" class="br.com.digicon.sbe.action.ElementoAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+            </result>
+        </action>
+
+        <action name="configuracaoOperacaoPDV!*" method="{1}" class="br.com.digicon.sbe.action.ConfiguracaoOperacaoPDVAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+            </result>
+        </action>
+
+        <action name="sessaoInativa!*" method="{1}" class="br.com.digicon.sbe.action.SessaoInativaAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+            </result>
+        </action>
+        
+        <action name="emissaoTrinit!*" method="{1}" class="br.com.digicon.sbe.action.EmissaoTrinitAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+            </result>
+        </action>
+        
+        <action name="instituicaoFinanceira!*" method="{1}" class="br.com.digicon.sbe.action.InstituicaoFinanceiraAction">
+           <result name="success" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+           </result>
+           <result name="input" type="json">
+               <param name="root">
+                   mapaRetorno
+               </param>
+               <param name="contentType">application/json;charset=ISO-8859-1</param>
+               <param name="enableGZIP">true</param>
+            </result>
+        </action>
+        
+  	</package>
+</struts>

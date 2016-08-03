@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.decimal.sword.entity.Field;
 import br.com.decimal.sword.mapper.DMLTranslator;
 import br.com.decimal.sword.mapper.EntityToMapper;
-import br.com.decimal.sword.mapper.Field;
 import br.com.decimal.sword.mapper.FileUtil;
 import br.com.decimal.sword.mapper.PlaceHolder;
 
@@ -89,8 +89,8 @@ public class SwordService {
 		return value.replaceAll("java.lang.", "");
 	}
 	
-	public Map<String, String> createMap( Field [] fields ) {
-		Map<String, String> map = new HashMap<String, String>();
+	private Map<String, String> createMap( Field [] fields ) {
+		Map<String, String> map = new HashMap<>();
 		
 		String entidade = fields[0].getClassName();
 		String objeto = uncapitalized(entidade);
@@ -107,12 +107,12 @@ public class SwordService {
 		return map;
 	}
 	
-	public void createVo( Field [] fields , String mapperPathResult ) {
+	private void createVo( Field [] fields , String mapperPathResult ) {
 		
 		Map<String, String> map = createMap( fields );
 		
-		StringBuffer bufferField = new StringBuffer();
-		StringBuffer bufferGetterAndSetter = new StringBuffer();
+		StringBuilder bufferField = new StringBuilder();
+		StringBuilder bufferGetterAndSetter = new StringBuilder();
 		for(Field field : fields) {
 			
 			bufferField.append("\t");
@@ -134,41 +134,41 @@ public class SwordService {
 			map.put("@@GetterAndSetter@@", bufferGetterAndSetter.toString());
 		}
 		
-		String fileContent = placeHolder.replace(map, "./VoMapper.txt");
+		String fileContent = placeHolder.replace(map, "resources/VoMapper.txt");
 		FileUtil.write(fields[0].getClassName() + ".java", fileContent, false);
 		
 	}
 	
-	public void createMapperIbatis( Field [] fields , String mapperPathResult ) {
-		String header = FileUtil.read("./IBatisHeader.txt");
+	private void createMapperIbatis( Field [] fields , String mapperPathResult ) {
+		String header = FileUtil.read("resources/IBatisHeader.txt");
 		String fileContent = entityToMapper.getMapperIbatis(fields);
 		FileUtil.write(fields[0].getClassName() + "Ibatis.xml", header, false);
 		FileUtil.write(fields[0].getClassName() + "Ibatis.xml", fileContent, true);
 	}
 	
-	public void createMapperDAO( Field [] fields, String mapperPathResult ) {
+	private void createMapperDAO( Field [] fields, String mapperPathResult ) {
 		
 		Map<String, String> map = createMap( fields );
 		
-		String fileContent = placeHolder.replace(map, "./DaoMapper.txt");
+		String fileContent = placeHolder.replace(map, "resources/DaoMapper.txt");
 		FileUtil.write(fields[0].getClassName() + "DAO.java", fileContent, false);
 		
 	}
 	
-	public void createMapperFacade( Field [] fields, String mapperPathResult ) {
+	private void createMapperFacade( Field [] fields, String mapperPathResult ) {
 		
 		Map<String, String> map = createMap( fields );
 		
-		String fileContent = placeHolder.replace(map, "./FacadeMapper.txt");
+		String fileContent = placeHolder.replace(map, "resources/FacadeMapper.txt");
 		FileUtil.write(fields[0].getClassName() + "Facade.java", fileContent, false);
 		
 	}
 
-	public void createMapperAction( Field [] fields, String mapperPathResult ) {
+	private void createMapperAction( Field [] fields, String mapperPathResult ) {
 	
 		Map<String, String> map = createMap( fields );
 
-		String fileContent = placeHolder.replace(map, "./ActionMapper.txt");
+		String fileContent = placeHolder.replace(map, "resources/ActionMapper.txt");
 		FileUtil.write(fields[0].getClassName() + "Action.java", fileContent, false);
 	
 	}

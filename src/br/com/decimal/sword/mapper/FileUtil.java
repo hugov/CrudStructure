@@ -11,12 +11,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Vitor Hugo Oliveira
  *
  */
 public class FileUtil {
 	
+	private static final Logger LOGGER = Logger.getLogger(MySQL.class);
 	private static final String TEMP = "C:\\TEMP\\";
 	
 	private FileUtil() { }
@@ -26,14 +29,15 @@ public class FileUtil {
 		try {
 			writer = new BufferedWriter(new FileWriter( new File( TEMP + filename ) , append ));
 			writer.append( fileContent );
-			//writer.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Falha ao escrever o arquivo", e);
 		} finally {
 			try {
-				writer.close();
+				if(writer != null) {
+					writer.close();
+				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.error("Falha ao fechar o stream", e);
 			}
 		}
 		
@@ -55,14 +59,16 @@ public class FileUtil {
 			}
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			LOGGER.error("Arquivo não encontrado", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Falha ao fechar o stream", e);
 		} finally {
 			try {
-				reader.close();
+				if(reader != null) {
+					reader.close();
+				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.error("Falha ao fechar o stream", e);
 			}
 		}
 		

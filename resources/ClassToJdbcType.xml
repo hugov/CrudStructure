@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Mappers>
+	<Mapper>
+	    <from>java.lang.Integer</from>
+	    <to>DECIMAL</to>
+	</Mapper>
+	<Mapper>
+	    <from>java.lang.Long</from>
+	    <to>DECIMAL</to>
+	</Mapper>
+	<Mapper>
+	    <from>java.lang.Double</from>
+	    <to>DECIMAL</to>
+	</Mapper>
+	<Mapper>
+	    <from>java.lang.String</from>
+	    <to>VARCHAR</to>
+	</Mapper>
+	<Mapper>
+	    <from>java.util.Date</from>
+	    <to>TIMESTAMP</to>
+	</Mapper>
+</Mappers>

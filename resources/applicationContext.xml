@@ -1,0 +1,1389 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/context/spring-context-2.5.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<!-- Modo Produção -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/sbeDS" />
+		<property name="lookupOnStartup" value="false" />
+		<property name="cache" value="true" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+	</bean>
+
+	<!-- Modo Debug -->
+<!-- 	<bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource"> -->
+<!-- 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" /> -->
+<!-- 		<property name="url" value="jdbc:oracle:thin:@10.104.10.3:1521:labdigbil" /> -->
+<!-- 		<property name="username" value="sbe" /> -->
+<!-- 		<property name="password" value="sbe" /> -->
+<!-- 	</bean> -->
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!--
+		the transactional advice (what 'happens'; see the <aop:advisor/> bean
+		below)
+	-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- the transactional semantics... -->
+		<tx:attributes>
+
+			<!-- all methods starting with 'get' are read-only -->
+			<!-- <tx:method name="get*" read-only="true" />  -->
+			<!-- other methods use the default transaction settings (see below) -->
+			<tx:method name="*" rollback-for="java.lang.Exception"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="serviceTransactioPointCut"
+			expression="execution(public * br.com.digicon.sbe.facades..*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceTransactioPointCut" />
+	</aop:config>
+
+
+ 	<tx:annotation-driven />
+
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+
+		<!-- Modo Debug -->
+<!-- 		<property name="configLocation" value="file:WebContent/WEB-INF/sqlmap-config.xml" /> -->
+
+		<!-- Modo Produção -->
+		<property name="configLocation" value="/WEB-INF/sqlmap-config.xml" />
+	</bean>
+
+	<bean id="feriadoDAO" class="br.com.digicon.sbe.dao.FeriadoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="feriadoFacade" class="br.com.digicon.sbe.facades.geral.FeriadoFacade">
+		<property name="feriadoDAO">
+			<ref local="feriadoDAO" />
+		</property>
+	</bean>
+
+	<bean id="parametrosGeraisSistemaDAO" class="br.com.digicon.sbe.dao.ParametrosGeraisSistemaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="parametrosGeraisSistemaFacade"
+		class="br.com.digicon.sbe.facades.geral.ParametrosGeraisSistemaFacade">
+		<property name="parametrosGeraisSistemaDAO">
+			<ref local="parametrosGeraisSistemaDAO" />
+		</property>
+	</bean>
+
+	<bean id="funcionalidadeDAO" class="br.com.digicon.sbe.dao.FuncionalidadeDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="desbloqueioTurnoDAO" class="br.com.digicon.sbe.dao.DesbloqueioTurnoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="desbloqueioTurnoFacade" class="br.com.digicon.sbe.facades.DesbloqueioTurnoFacade">
+		<property name="desbloqueioTurnoDAO">
+			<ref local="desbloqueioTurnoDAO" />
+		</property>
+	</bean>
+
+	<bean id="arquivoDAO" class="br.com.digicon.sbe.dao.ArquivoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="arquivoFacade" class="br.com.digicon.sbe.facades.ArquivoFacade">
+		<property name="arquivoDAO">
+			<ref local="arquivoDAO" />
+		</property>
+	</bean>
+
+	<bean id="distribuicaoDAO" class="br.com.digicon.sbe.dao.DistribuicaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="distribuicaoFacade" class="br.com.digicon.sbe.facades.DistribuicaoFacade">
+		<property name="distribuicaoDAO">
+			<ref local="distribuicaoDAO" />
+		</property>
+		<property name="distribuicaoTerminalDAO">
+			<ref local="distribuicaoTerminalDAO" />
+		</property>
+		<property name="distribuicaoArquivoDAO">
+			<ref local="distribuicaoArquivoDAO" />
+		</property>
+	</bean>
+
+	<bean id="distribuicaoTerminalDAO" class="br.com.digicon.sbe.dao.DistribuicaoTerminalDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="distribuicaoTerminalFacade" class="br.com.digicon.sbe.facades.DistribuicaoTerminalFacade">
+		<property name="distribuicaoTerminalDAO">
+			<ref local="distribuicaoTerminalDAO" />
+		</property>
+	</bean>
+
+	<bean id="distribuicaoArquivoDAO" class="br.com.digicon.sbe.dao.DistribuicaoArquivoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="distribuicaoArquivoFacade" class="br.com.digicon.sbe.facades.DistribuicaoArquivoFacade">
+		<property name="distribuicaoArquivoDAO">
+			<ref local="distribuicaoArquivoDAO" />
+		</property>
+	</bean>
+
+	<bean id="tipoArquivoDAO" class="br.com.digicon.sbe.dao.TipoArquivoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="listaRestricaoDAO" class="br.com.digicon.sbe.dao.ListaRestricaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoArquivoFacade" class="br.com.digicon.sbe.facades.TipoArquivoFacade">
+		<property name="tipoArquivoDAO">
+			<ref local="tipoArquivoDAO" />
+		</property>
+	</bean>
+
+	<bean id="tipoArquivoModeloDAO" class="br.com.digicon.sbe.dao.TipoArquivoModeloDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoArquivoModeloFacade" class="br.com.digicon.sbe.facades.TipoArquivoModeloFacade">
+		<property name="tipoArquivoModeloDAO">
+			<ref local="tipoArquivoModeloDAO" />
+		</property>
+	</bean>
+
+	<bean id="solicitacaoLoteCartaoDAO" class="br.com.digicon.sbe.dao.SolicitacaoLoteCartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="solicitacaoLoteCartaoFacade"
+		class="br.com.digicon.sbe.facades.controleCartao.SolicitacaoLoteCartaoFacade">
+		<property name="solicitacaoLoteCartaoDAO">
+			<ref local="solicitacaoLoteCartaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="tipoCartaoDAO" class="br.com.digicon.sbe.dao.TipoCartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoCartaoTerminalUtilizacaoDAO" class="br.com.digicon.sbe.dao.TipoCartaoTerminalUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoCartaoFacade" class="br.com.digicon.sbe.facades.TipoCartaoFacade">
+		<property name="tipoCartaoDAO">
+			<ref local="tipoCartaoDAO" />
+		</property>
+		<property name="tipoCartaoTerminalUtilizacaoDAO">
+			<ref local="tipoCartaoTerminalUtilizacaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="chaveTransporteDAO" class="br.com.digicon.sbe.dao.ChaveTransporteDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="chaveTransporteFacade" class="br.com.digicon.sbe.facades.ChaveTransporteFacade">
+		<property name="chaveTransporteDAO">
+			<ref local="chaveTransporteDAO" />
+		</property>
+	</bean>
+
+	<bean id="usuarioDAO" class="br.com.digicon.sbe.dao.UsuarioDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="usuarioFacade"
+		class="br.com.digicon.sbe.facades.controleTerminal.UsuarioFacade">
+		<property name="usuarioDAO">
+			<ref local="usuarioDAO" />
+		</property>
+	</bean>
+
+	<bean id="listaRestricaoFacade" class="br.com.digicon.sbe.facades.controleCartao.ListaRestricaoFacade">
+		<property name="listaRestricaoDAO">
+			<ref local="listaRestricaoDAO" />
+		</property>
+		<property name="cartaoDAO">
+			<ref local="cartaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="tDominioDAO" class="br.com.digicon.sbe.dao.TDominioDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tDominioFacade" class="br.com.digicon.sbe.facades.controleTerminal.TDominioFacade">
+		<property name="tDominioDAO">
+			<ref local="tDominioDAO" />
+		</property>
+	</bean>
+
+	<bean id="grupoTipoCartaoDAO" class="br.com.digicon.sbe.dao.GrupoTipoCartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="grupoTipoCartaoFacade"
+		class="br.com.digicon.sbe.facades.controleTerminal.GrupoTipoCartaoFacade">
+		<property name="grupoTipoCartaoDAO">
+			<ref local="grupoTipoCartaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="linhaServicoDAO" class="br.com.digicon.sbe.dao.LinhaServicoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="linhaServicoFacade" class="br.com.digicon.sbe.facades.LinhaServicoFacade">
+		<property name="linhaServicoDAO">
+			<ref local="linhaServicoDAO" />
+		</property>
+	</bean>
+
+	<bean id="localDAO" class="br.com.digicon.sbe.dao.LocalDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoLocalDAO" class="br.com.digicon.sbe.dao.TipoLocalDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoLocalFacade" class="br.com.digicon.sbe.facades.TipoLocalFacade">
+		<property name="tipoLocalDAO">
+			<ref local="tipoLocalDAO" />
+	    </property>
+		<property name="localDAO">
+			<ref local="localDAO" />
+		</property>
+	</bean>
+
+
+	<bean id="localServicoUtilizacaoDAO" class="br.com.digicon.sbe.dao.LocalServicoUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	 <bean id="localServicoUtilizacaoFacade" class="br.com.digicon.sbe.facades.LocalServicoUtilizacaoFacade">
+		<property name="localServicoUtilizacaoDAO">
+			<ref local="localServicoUtilizacaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="servicoUtilizacaoDAO" class="br.com.digicon.sbe.dao.ServicoUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	 <bean id="servicoUtilizacaoFacade" class="br.com.digicon.sbe.facades.ServicoUtilizacaoFacade">
+		<property name="servicoUtilizacaoDAO">
+			<ref local="servicoUtilizacaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="linhaBloqueioDAO" class="br.com.digicon.sbe.dao.LinhaBloqueioDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+
+	<bean id="localFacade" class="br.com.digicon.sbe.facades.controleTerminal.LocalFacade">
+		<property name="localDAO">
+			<ref local="localDAO" />
+		</property>
+		<property name="linhaServicoDAO">
+			<ref local="linhaServicoDAO" />
+		</property>
+		<property name="localServicoUtilizacaoDAO">
+			<ref local="localServicoUtilizacaoDAO" />
+		</property>
+		<property name="terminalDAO">
+			<ref local="terminalDAO" />
+		</property>
+	</bean>
+
+	<bean id="linhaDAO" class="br.com.digicon.sbe.dao.LinhaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="resumoStatusValidadorDAO" class="br.com.digicon.sbe.dao.ResumoStatusValidadorDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="resumoStatusValidadorFacade" class="br.com.digicon.sbe.facades.ResumoStatusValidadorFacade">
+		<property name="resumoStatusValidadorDAO">
+			<ref local="resumoStatusValidadorDAO" />
+		</property>
+	</bean>
+
+	<bean id="grupoProdutoDAO" class="br.com.digicon.sbe.dao.GrupoProdutoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="grupoProdutoFacade" class="br.com.digicon.sbe.facades.GrupoProdutoFacade">
+		<property name="grupoProdutoDAO">
+			<ref local="grupoProdutoDAO" />
+		</property>
+	</bean>
+
+	<bean id="linhaFacade" class="br.com.digicon.sbe.facades.LinhaFacade">
+		<property name="linhaDAO">
+			<ref local="linhaDAO" />
+		</property>
+	</bean>
+
+	<bean id="modeloTerminalDAO" class="br.com.digicon.sbe.dao.ModeloTerminalDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="modeloTerminalFacade" class="br.com.digicon.sbe.facades.ModeloTerminalFacade">
+		<property name="modeloTerminalDAO">
+			<ref local="modeloTerminalDAO" />
+		</property>
+	</bean>
+
+	<bean id="terminalDAO" class="br.com.digicon.sbe.dao.TerminalDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="terminalFacade"
+		class="br.com.digicon.sbe.facades.controleTerminal.TerminalFacade">
+		<property name="terminalDAO">
+			<ref local="terminalDAO" />
+		</property>
+
+		<property name="terminalIdentificacaoDAO">
+			<ref local="terminalIdentificacaoDAO" />
+		</property>
+
+		<property name="distribuicaoTerminalDAO">
+			<ref local="distribuicaoTerminalDAO" />
+		</property>
+
+	</bean>
+
+	<bean id="terminalIdentificacaoDAO" class="br.com.digicon.sbe.dao.TerminalIdentificacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="terminalIdentificacaoFacade"
+		class="br.com.digicon.sbe.facades.controleTerminal.TerminalIdentificacaoFacade">
+		<property name="terminalIdentificacaoDAO">
+			<ref local="terminalIdentificacaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="motivoBloqueioCartaoDAO" class="br.com.digicon.sbe.dao.MotivoBloqueioCartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="motivoBloqueioCartaoFacade"
+		class="br.com.digicon.sbe.facades.emissaoCartao.MotivoBloqueioCartaoFacade">
+		<property name="motivoBloqueioCartaoDAO">
+			<ref local="motivoBloqueioCartaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="grupoEstacaoDAO" class="br.com.digicon.sbe.dao.GrupoEstacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="grupoEstacaoEstacoesDAO" class="br.com.digicon.sbe.dao.GrupoEstacaoEstacoesDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="grupoEstacaoFacade" class="br.com.digicon.sbe.facades.sistUtil.GrupoEstacaoFacade">
+     	<property name="grupoEstacaoDAO">
+			<ref local="grupoEstacaoDAO" />
+		</property>
+     	<property name="grupoEstacaoEstacoesDAO">
+			<ref local="grupoEstacaoEstacoesDAO" />
+		</property>
+  	</bean>
+
+	<bean id="grupoEstacaoEstacoesFacade" class="br.com.digicon.sbe.facades.sistUtil.GrupoEstacaoEstacoesFacade">
+     	<property name="grupoEstacaoEstacoesDAO">
+			<ref local="grupoEstacaoEstacoesDAO" />
+		</property>
+  	</bean>
+
+	<bean id="grupoHorarioDAO" class="br.com.digicon.sbe.dao.GrupoHorarioDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="grupoHorarioFacade" class="br.com.digicon.sbe.facades.sistUtil.GrupoHorarioFacade">
+		<property name="grupoHorarioDAO">
+			<ref local="grupoHorarioDAO" />
+		</property>
+	</bean>
+
+
+	<bean id="faixaHorarioDAO" class="br.com.digicon.sbe.dao.FaixaHorarioDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="faixaHorarioFacade" class="br.com.digicon.sbe.facades.FaixaHorarioFacade">
+		<property name="faixaHorarioDAO">
+			<ref local="faixaHorarioDAO" />
+		</property>
+	</bean>
+
+	<bean id="sinalLuminosoDAO" class="br.com.digicon.sbe.dao.SinalLuminosoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="sinalLuminosoFacade" class="br.com.digicon.sbe.facades.sistUtil.SinalLuminosoFacade">
+		<property name="sinalLuminosoDAO">
+			<ref local="sinalLuminosoDAO" />
+		</property>
+	</bean>
+
+	<bean id="sinalSonoroDAO" class="br.com.digicon.sbe.dao.SinalSonoroDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="sinalSonoroFacade" class="br.com.digicon.sbe.facades.sistUtil.SinalSonoroFacade">
+		<property name="sinalSonoroDAO">
+			<ref local="sinalSonoroDAO" />
+		</property>
+	</bean>
+
+	<bean id="eventoDAO" class="br.com.digicon.sbe.dao.EventoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="eventoFacade" class="br.com.digicon.sbe.facades.EventoFacade">
+		<property name="eventoDAO">
+			<ref local="eventoDAO" />
+		</property>
+	</bean>
+
+	<bean id="mensagemTerminalDAO" class="br.com.digicon.sbe.dao.MensagemTerminalDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="mensagemTerminalFacade" class="br.com.digicon.sbe.facades.MensagemTerminalFacade">
+		<property name="mensagemTerminalDAO">
+			<ref local="mensagemTerminalDAO" />
+		</property>
+	</bean>
+
+	<bean id="parametroValidadorDAO" class="br.com.digicon.sbe.dao.ParametroValidadorDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="parametroValidadorFacade"
+		class="br.com.digicon.sbe.facades.geral.ParametroValidadorFacade">
+		<property name="parametroValidadorDAO">
+			<ref local="parametroValidadorDAO" />
+		</property>
+	</bean>
+
+	<bean id="tbSvcPromocaoDAO" class="br.com.digicon.sbe.dao.TbSvcPromocaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="promoPeriodoServUtilizacaoDAO" class="br.com.digicon.sbe.dao.PromoPeriodoServUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="promocaoFeriadoServicoUtilizacaoDAO" class="br.com.digicon.sbe.dao.PromocaoFeriadoServicoUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+
+	<bean id="tbSvcPromoFeriadoUtilizacaoDAO" class="br.com.digicon.sbe.dao.TbSvcPromoFeriadoUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tbSvcPromoFeriadoVendaDAO" class="br.com.digicon.sbe.dao.TbSvcPromoFeriadoVendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="promoPeriodoTermUtilizaDAO" class="br.com.digicon.sbe.dao.PromoPeriodoTermUtilizaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="promocaoPeriodoTerminalVendaDAO" class="br.com.digicon.sbe.dao.TbSvcPromoPeriodoTermVendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="tbSvcPromoPeriodoUtilizacaoDAO" class="br.com.digicon.sbe.dao.TbSvcPromoPeriodoUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="tbSvcPromoPeriodoVendaDAO" class="br.com.digicon.sbe.dao.TbSvcPromoPeriodoVendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="produtoRecargaDAO" class="br.com.digicon.sbe.dao.ProdutoRecargaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="produtoRecargaTipoCartaoDAO" class="br.com.digicon.sbe.dao.ProdutoRecargaTipoCartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="promocaoRegraUtilizacaoDAO" class="br.com.digicon.sbe.dao.PromocaoRegraUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="tbSvcPromoRegraVendaDAO" class="br.com.digicon.sbe.dao.TbSvcPromoRegraVendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="promocaoFeriadoTerminalUtilizacaoDAO" class="br.com.digicon.sbe.dao.TbSvcPromoferiadotermutilizaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="promocaoFeriadoTerminalVendaDAO" class="br.com.digicon.sbe.dao.TbSvcPromoferiadotermvendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="periodoDAO" class="br.com.digicon.sbe.dao.PeriodoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="periodoFacade" class="br.com.digicon.sbe.facades.PeriodoFacade">
+		<property name="periodoDAO">
+			<ref local="periodoDAO" />
+		</property>
+	</bean>
+
+	<bean id="promoProdutoVendaUtilizacaoDAO" class="br.com.digicon.sbe.dao.PromoProdutoVendaUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="promoTermVendaDAO" class="br.com.digicon.sbe.dao.PromoTermVendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="promoTermUtilizacaoDAO" class="br.com.digicon.sbe.dao.PromoTermUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="promoServicoUtilizacaoDAO" class="br.com.digicon.sbe.dao.PromoServicoUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="promocaoFeriadoFaixaHorariaDAO" class="br.com.digicon.sbe.dao.PromoFeriadoFaixaHRDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+	<bean id="promocaoPeriodoFaixaHorariaDAO" class="br.com.digicon.sbe.dao.PromoPeriodoFaixaHRDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="promocaoFacade" class="br.com.digicon.sbe.facades.sistUtil.PromocaoFacade">
+		<property name="tbSvcPromocaoDAO">
+			<ref local="tbSvcPromocaoDAO" />
+		</property>
+
+		<property name="produtoVendaDAO">
+			<ref local="produtoVendaDAO" />
+		</property>
+
+		<property name="promocaoFeriadoTerminalVendaDAO">
+			<ref local="promocaoFeriadoTerminalVendaDAO" />
+		</property>
+
+		<property name="tbSvcPromoFeriadoUtilizacaoDAO">
+			<ref local="tbSvcPromoFeriadoUtilizacaoDAO" />
+		</property>
+
+		<property name="tbSvcPromoFeriadoVendaDAO">
+			<ref local="tbSvcPromoFeriadoVendaDAO" />
+		</property>
+
+		<property name="promoPeriodoTermUtilizaDAO">
+			<ref local="promoPeriodoTermUtilizaDAO" />
+		</property>
+
+		<property name="tbSvcPromoPeriodoUtilizacaoDAO">
+			<ref local="tbSvcPromoPeriodoUtilizacaoDAO" />
+		</property>
+
+		<property name="tbSvcPromoPeriodoVendaDAO">
+			<ref local="tbSvcPromoPeriodoVendaDAO" />
+		</property>
+
+		<property name="periodoDAO">
+			<ref local="periodoDAO" />
+		</property>
+
+		<property name="promoProdutoVendaUtilizacaoDAO">
+			<ref local="promoProdutoVendaUtilizacaoDAO" />
+		</property>
+
+		<property name="promoTermVendaDAO">
+			<ref local="promoTermVendaDAO" />
+		</property>
+
+		<property name="promoTermUtilizacaoDAO">
+			<ref local="promoTermUtilizacaoDAO" />
+		</property>
+
+		<property name="promoServicoUtilizacaoDAO">
+			<ref local="promoServicoUtilizacaoDAO" />
+		</property>
+
+		<property name="tbSvcPromoProdutoVendaDAO">
+			<ref local="tbSvcPromoProdutoVendaDAO" />
+		</property>
+
+		<property name="tbSvcPromoRegraVendaDAO">
+			<ref local="tbSvcPromoRegraVendaDAO" />
+		</property>
+
+		<property name="promocaoRegraUtilizacaoDAO">
+			<ref local="promocaoRegraUtilizacaoDAO" />
+		</property>
+
+		<property name="promocaoFeriadoFaixaHorariaDAO">
+			<ref local="promocaoFeriadoFaixaHorariaDAO" />
+		</property>
+
+		<property name="promocaoPeriodoFaixaHorariaDAO">
+			<ref local="promocaoPeriodoFaixaHorariaDAO" />
+		</property>
+
+		<property name="promocaoPeriodoTerminalVendaDAO">
+			<ref local="promocaoPeriodoTerminalVendaDAO" />
+		</property>
+
+		<property name="promocaoFeriadoTerminalUtilizacaoDAO">
+			<ref local="promocaoFeriadoTerminalUtilizacaoDAO"/>
+		</property>
+
+		<property name="promoPeriodoServUtilizacaoDAO">
+			<ref local="promoPeriodoServUtilizacaoDAO"/>
+		</property>
+
+		<property name="promocaoFeriadoServicoUtilizacaoDAO">
+			<ref local="promocaoFeriadoServicoUtilizacaoDAO"/>
+		</property>
+
+		<property name="localDAO">
+			<ref local="localDAO"/>
+		</property>
+
+	</bean>
+
+	<bean id="parametroTerminalDAO" class="br.com.digicon.sbe.dao.ParametroTerminalDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="parametroTerminalFacade" class="br.com.digicon.sbe.facades.ParametroTerminalFacade">
+		<property name="parametroTerminalDAO">
+			<ref local="parametroTerminalDAO" />
+		</property>
+	</bean>
+
+	<bean id="produtoVendaDAO" class="br.com.digicon.sbe.dao.ProdutoVendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="produtoTerminalVendaDAO" class="br.com.digicon.sbe.dao.ProdutoTerminalVendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="produtoTerminalUtilizacaoDAO" class="br.com.digicon.sbe.dao.ProdutoTerminalUtilizacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tbSvcPromoProdutoVendaDAO" class="br.com.digicon.sbe.dao.TbSvcPromoProdutoVendaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="produtoDiversoDAO" class="br.com.digicon.sbe.dao.ProdutoDiversoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="produtoRecargaIntegracaoDAO" class="br.com.digicon.sbe.dao.ProdutoRecargaIntegracaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="produtoRecargaTicketDAO" class="br.com.digicon.sbe.dao.ProdutoRecargaTicketDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="produtoFacade" class="br.com.digicon.sbe.facades.ProdutoFacade">
+		<property name="produtoVendaDAO">
+			<ref local="produtoVendaDAO" />
+		</property>
+
+		<property name="produtoRecargaDAO">
+  			 <ref local="produtoRecargaDAO" />
+  		</property>
+
+  		<property name="produtoRecargaTipoCartaoDAO">
+			<ref local="produtoRecargaTipoCartaoDAO" />
+		</property>
+
+		<property name="produtoRecargaIntegracaoDAO">
+  			 <ref local="produtoRecargaIntegracaoDAO" />
+  		</property>
+
+  		<property name="produtoDiversoDAO">
+			<ref local="produtoDiversoDAO" />
+		</property>
+
+		<property name="produtoTerminalVendaDAO">
+  			 <ref local="produtoTerminalVendaDAO" />
+  		</property>
+
+  		<property name="produtoTerminalUtilizacaoDAO">
+			<ref local="produtoTerminalUtilizacaoDAO" />
+		</property>
+
+		<property name="tbSvcPromoProdutoVendaDAO">
+			<ref local="tbSvcPromoProdutoVendaDAO" />
+		</property>
+
+		<property name="tipoCartaoDAO">
+			<ref local="tipoCartaoDAO" />
+		</property>
+
+		<property name="tarifaDAO">
+			<ref local="tarifaDAO" />
+		</property>
+
+		<property name="grupoTipoCartaoDAO">
+			<ref local="grupoTipoCartaoDAO" />
+		</property>
+
+		<property name="produtoRecargaTicketDAO">
+			<ref local="produtoRecargaTicketDAO" />
+		</property>
+	</bean>
+
+	<bean id="inicializacaoCartaoDAO" class="br.com.digicon.sbe.dao.InicializacaoCartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="cartaoDAO" class="br.com.digicon.sbe.dao.CartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="cartaoErroDAO" class="br.com.digicon.sbe.dao.CartaoErroDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="solicitacaoCartaoDAO" class="br.com.digicon.sbe.dao.SolicitacaoCartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="chaveSetorDAO" class="br.com.digicon.sbe.dao.ChaveSetorDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+ 	<bean id="inicializacaoCartaoAction" class="br.com.digicon.sbe.action.InicializacaoCartaoAction" />
+
+	<bean id="tarifaDAO" class="br.com.digicon.sbe.dao.TarifaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tarifaFacade" class="br.com.digicon.sbe.facades.TarifaFacade">
+		<property name="tarifaDAO">
+			<ref local="tarifaDAO" />
+		</property>
+		<property name="tarifaPrecoDAO">
+			<ref local="tarifaPrecoDAO" />
+		</property>
+	</bean>
+
+	<bean id="taxaDAO" class="br.com.digicon.sbe.dao.TaxaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="taxaFacade" class="br.com.digicon.sbe.facades.TaxaFacade">
+		<property name="taxaDAO">
+			<ref local="taxaDAO" />
+		</property>
+		<property name="taxaVigenciaDAO">
+			<ref local="taxaVigenciaDAO" />
+		</property>
+	</bean>
+
+	<bean id="layoutDAO" class="br.com.digicon.sbe.dao.LayoutDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="layoutFacade" class="br.com.digicon.sbe.facades.controleCartao.LayoutFacade">
+		<property name="layoutDAO">
+			<ref local="layoutDAO" />
+		</property>
+	</bean>
+
+	<bean id="linhaBloqueioFacade" class="br.com.digicon.sbe.facades.LinhaBloqueioFacade">
+		<property name="linhaBloqueioDAO">
+			<ref local="linhaBloqueioDAO" />
+		</property>
+	</bean>
+
+	<bean id="integracaoDAO" class="br.com.digicon.sbe.dao.IntegracaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="integracaoFacade" class="br.com.digicon.sbe.facades.IntegracaoFacade">
+		<property name="integracaoDAO">
+			<ref local="integracaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="tarifaPrecoDAO" class="br.com.digicon.sbe.dao.TarifaPrecoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tarifaPrecoFacade" class="br.com.digicon.sbe.facades.TarifaPrecoFacade">
+		<property name="tarifaPrecoDAO">
+			<ref local="tarifaPrecoDAO" />
+		</property>
+	</bean>
+
+	<bean id="taxaVigenciaDAO" class="br.com.digicon.sbe.dao.TaxaVigenciaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="taxaVigenciaFacade" class="br.com.digicon.sbe.facades.TaxaVigenciaFacade">
+		<property name="taxaVigenciaDAO">
+			<ref local="taxaVigenciaDAO" />
+		</property>
+	</bean>
+
+	<bean id="configuracaoAgendamentoDAO" class="br.com.digicon.sbe.dao.ConfiguracaoAgendamentoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="configuracaoAgendamentoFacade" class="br.com.digicon.sbe.facades.geral.ConfiguracaoAgendamentoFacade">
+		<property name="configuracaoAgendamentoDAO">
+			<ref local="configuracaoAgendamentoDAO" />
+		</property>
+	</bean>
+
+	<bean id="tipoUsuarioDAO" class="br.com.digicon.sbe.dao.TipoUsuarioDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoUsuarioFacade" class="br.com.digicon.sbe.facades.TipoUsuarioFacade">
+		<property name="tipoUsuarioDAO">
+			<ref local="tipoUsuarioDAO" />
+		</property>
+	</bean>
+
+	<bean id="inicializacaoCartaoFacade" class="br.com.digicon.sbe.facades.emissaoCartao.InicializacaoCartaoFacade">
+		<property name="inicializacaoCartaoDAO">
+			<ref local="inicializacaoCartaoDAO" />
+		</property>
+		<property name="solicitacaoLoteCartaoDAO">
+			<ref local="solicitacaoLoteCartaoDAO" />
+		</property>
+		<property name="cartaoDAO">
+			<ref local="cartaoDAO" />
+		</property>
+		<property name="cartaoErroDAO">
+			<ref local="cartaoErroDAO" />
+		</property>
+		<property name="solicitacaoCartaoDAO">
+			<ref local="solicitacaoCartaoDAO" />
+		</property>
+		<property name="chaveSetorDAO">
+			<ref local="chaveSetorDAO" />
+		</property>
+		<property name="chaveTransporteDAO">
+			<ref local="chaveTransporteDAO" />
+		</property>
+		<property name="tDominioDAO">
+			<ref local="tDominioDAO" />
+		</property>
+		<property name="tipoCartaoDAO">
+			<ref local="tipoCartaoDAO" />
+		</property>
+		<property name="parametrosGeraisSistemaDAO">
+			<ref local="parametrosGeraisSistemaDAO" />
+		</property>
+	</bean>
+
+	<bean id="restricaoTipoCartaoDAO" class="br.com.digicon.sbe.dao.RestricaoTipoCartaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="restricaoTipoCartaoFacade" class="br.com.digicon.sbe.facades.controleCartao.RestricaoTipoCartaoFacade">
+		<property name="restricaoTipoCartaoDAO">
+			<ref local="restricaoTipoCartaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="grupoFormaPagamentoDAO" class="br.com.digicon.sbe.dao.GrupoFormaPagamentoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="grupoFormaPagamentoFacade" class="br.com.digicon.sbe.facades.controleTerminal.GrupoFormaPagamentoFacade">
+		<property name="grupoFormaPagamentoDAO">
+			<ref local="grupoFormaPagamentoDAO" />
+		</property>
+	</bean>
+
+	<bean id="tipoTarifaDAO" class="br.com.digicon.sbe.dao.TipoTarifaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoTarifaFacade" class="br.com.digicon.sbe.facades.TipoTarifaFacade">
+		<property name="tipoTarifaDAO">
+			<ref local="tipoTarifaDAO" />
+		</property>
+	</bean>
+
+	<bean id="tipoTaxaDAO" class="br.com.digicon.sbe.dao.TipoTaxaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoTaxaFacade" class="br.com.digicon.sbe.facades.TipoTaxaFacade">
+		<property name="tipoTaxaDAO">
+			<ref local="tipoTaxaDAO" />
+		</property>
+	</bean>
+
+
+	<bean id="controleAcessoFacade" class="br.com.digicon.sbe.facades.controleAcesso.ControleAcessoFacade">
+		<property name="funcionalidadeDAO">
+			<ref local="funcionalidadeDAO" />
+		</property>
+
+        <property name="usuarioSistemaDAO">
+			<ref local="usuarioSistemaDAO" />
+		</property>
+
+		<property name="autorizacaoPerfilDAO">
+			<ref local="autorizacaoPerfilDAO" />
+		</property>
+
+	</bean>
+
+	<bean id="connectionHelper" class="br.com.digicon.sbe.spring.ConnectionHelper">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="perfilPdvDAO" class="br.com.digicon.sbe.dao.PerfilPdvDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="usuarioPdvDAO" class="br.com.digicon.sbe.dao.UsuarioPdvDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+
+	<bean id="perfilUsuarioDAO" class="br.com.digicon.sbe.dao.PerfilUsuarioDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="tipoPerfilDAO" class="br.com.digicon.sbe.dao.TipoPerfilDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="perfilUsuarioFacade" class="br.com.digicon.sbe.facades.controleAcesso.PerfilUsuarioFacade">
+		<property name="perfilUsuarioDAO">
+			<ref local="perfilUsuarioDAO" />
+		</property>
+		<property name="tipoPerfilDAO">
+			<ref local="tipoPerfilDAO" />
+		</property>
+		<property name="autorizacaoPerfilDAO">
+			<ref local="autorizacaoPerfilDAO" />
+		</property>
+	</bean>
+
+	<bean id="usuarioSistemaDAO" class="br.com.digicon.sbe.dao.UsuarioSistemaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="usuarioSistemaFacade" class="br.com.digicon.sbe.facades.controleAcesso.UsuarioSistemaFacade">
+		<property name="usuarioSistemaDAO">
+			<ref local="usuarioSistemaDAO" />
+		</property>
+	</bean>
+
+	<bean id="usuarioPdvFacade" class="br.com.digicon.sbe.facades.controleAcesso.UsuarioPdvFacade">
+		<property name="usuarioPdvDAO">
+			<ref local="usuarioPdvDAO" />
+		</property>
+	</bean>
+
+	<bean id="perfilPdvFacade" class="br.com.digicon.sbe.facades.controleAcesso.PerfilPdvFacade">
+		<property name="perfilPdvDAO">
+			<ref local="perfilPdvDAO" />
+		</property>
+		<property name="autorizacaoPerfilOperadorDAO">
+			<ref local="autorizacaoPerfilOperadorDAO" />
+		</property>
+	</bean>
+
+	<bean id="autorizacaoPerfilDAO" class="br.com.digicon.sbe.dao.AutorizacaoPerfilDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+		<bean id="autorizacaoPerfilOperadorDAO" class="br.com.digicon.sbe.dao.AutorizacaoPerfilOperadorDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="autorizacaoPerfilFacade" class="br.com.digicon.sbe.facades.AutorizacaoPerfilFacade">
+		<property name="autorizacaoPerfilDAO">
+			<ref local="autorizacaoPerfilDAO" />
+		</property>
+	</bean>
+
+	<bean id="elementoDAO" class="br.com.digicon.sbe.dao.ElementoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="elementoFacade" class="br.com.digicon.sbe.facades.ElementoFacade">
+		<property name="elementoDAO">
+			<ref local="elementoDAO" />
+		</property>
+	</bean>
+
+	<bean id="empresaIntegracaoDAO" class="br.com.digicon.sbe.dao.EmpresaIntegracaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="empresaIntegracaoFacade" class="br.com.digicon.sbe.facades.EmpresaIntegracaoFacade">
+		<property name="empresaIntegracaoDAO">
+			<ref local="empresaIntegracaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="empresaDAO" class="br.com.digicon.sbe.dao.EmpresaDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="empresaFacade" class="br.com.digicon.sbe.facades.EmpresaFacade">
+		<property name="empresaDAO">
+			<ref local="empresaDAO" />
+		</property>
+	</bean>
+
+	<bean id="chaveDesbloqueioPDVDAO" class="br.com.digicon.sbe.dao.ChaveDesbloqueioPDVDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="chaveDesbloqueioPDVFacade" class="br.com.digicon.sbe.facades.ChaveDesbloqueioPDVFacade">
+		<property name="chaveDesbloqueioPDVDAO">
+			<ref local="chaveDesbloqueioPDVDAO" />
+		</property>
+		<property name="terminalIdentificacaoDAO">
+			<ref local="terminalIdentificacaoDAO" />
+		</property>
+	</bean>
+
+	<bean id="cartaoSenhaCadastroDAO" class="br.com.digicon.sbe.dao.CartaoSenhaCadastroDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="cartaoCopiaRevalidacaoDAO" class="br.com.digicon.sbe.dao.CartaoCopiaRevalidacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="cartaoRevalidacaoDAO" class="br.com.digicon.sbe.dao.CartaoRevalidacaoDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="consultaIncidenteDAO" class="br.com.digicon.sbe.dao.ConsultaIncidenteDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+    <bean id="relatorioResumoFinanceiroDAO" class="br.com.digicon.sbe.dao.RelatorioResumoFinanceiroDAO">
+        <property name="sqlMapClient">
+            <ref local="sqlMapClient" />
+        </property>
+    </bean>
+
+    <bean id="relatoriosFacade" class="br.com.digicon.sbe.facades.RelatoriosFacade">
+        <property name="relatorioResumoFinanceiroDAO">
+            <ref local="relatorioResumoFinanceiroDAO" />
+        </property>
+    </bean>
+
+	<bean id="diagnosticoIncidentesFacade" class="br.com.digicon.sbe.facades.DiagnosticoIncidentesFacade">
+		<property name="cartaoCopiaRevalidacaoDAO">
+			<ref local="cartaoCopiaRevalidacaoDAO" />
+		</property>
+		<property name="cartaoSenhaCadastroDAO">
+			<ref local="cartaoSenhaCadastroDAO" />
+		</property>
+		<property name="cartaoRevalidacaoDAO">
+			<ref local="cartaoRevalidacaoDAO" />
+		</property>
+		<property name="cartaoDAO">
+			<ref local="cartaoDAO" />
+		</property>
+		<property name="consultaIncidenteDAO">
+			<ref local="consultaIncidenteDAO" />
+		</property>
+	</bean>
+
+	<bean id="configuracaoOperacaoPDVDAO" class="br.com.digicon.sbe.dao.ConfiguracaoOperacaoPDVDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="configuracaoOperacaoPDVFacade" class="br.com.digicon.sbe.facades.ConfiguracaoOperacaoPDVFacade">
+		<property name="configuracaoOperacaoPDVDAO">
+			<ref local="configuracaoOperacaoPDVDAO" />
+		</property>
+	</bean>
+	
+	<bean id="emissaoTrinitDAO" class="br.com.digicon.sbe.dao.EmissaoTrinitDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="emissaoTrinitFacade" class="br.com.digicon.sbe.facades.EmissaoTrinitFacade">
+		<property name="emissaoTrinitDAO">
+			<ref local="emissaoTrinitDAO" />
+		</property>
+	</bean>
+	
+	<bean id="instituicaoFinanceiraDAO" class="br.com.digicon.sbe.dao.InstituicaoFinanceiraDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="instituicaoFinanceiraFacade" class="br.com.digicon.sbe.facades.InstituicaoFinanceiraFacade">
+		<property name="instituicaoFinanceiraDAO">
+			<ref local="instituicaoFinanceiraDAO" />
+		</property>
+	</bean>
+	
+	<bean id="saldoPlacaHMDAO" class="br.com.digicon.sbe.dao.SaldoPlacaHMDAO">
+		<property name="sqlMapClient">
+			<ref local="sqlMapClient" />
+		</property>
+	</bean>
+
+	<bean id="saldoPlacaHMFacade" class="br.com.digicon.sbe.facades.SaldoPlacaHMFacade">
+		<property name="saldoPlacaHMDAO">
+			<ref local="saldoPlacaHMDAO" />
+		</property>
+	</bean>
+
+<!-- 	Mapeamento Action - Modo Teste -->
+	<bean id="produtoAction" class="br.com.digicon.sbe.action.ProdutoVendaAction" />
+	<bean id="tipoCartaoAction" class="br.com.digicon.sbe.action.TipoCartaoAction" />
+	<bean id="tarifaAction" class="br.com.digicon.sbe.action.TarifaAction" />
+
+</beans>

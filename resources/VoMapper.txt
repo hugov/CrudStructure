@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+package br.com.digicon.sbe.vo;
+
+import java.io.Serializable;
+
+/**
+ * 
+ * @author Vitor Hugo Oliveira (voliveira@digicon.com.br)
+ * 
+ */
+public class @@Entidade@@ implements Serializable {
+
+	@@Field@@
+	@@GetterAndSetter@@
+
+}

@@ -1,0 +1,11 @@
+<bean id="@@Objeto@@DAO" class="br.com.digicon.sbe.dao.@@Entidade@@DAO">
+	<property name="sqlMapClient">
+		<ref local="sqlMapClient" />
+	</property>
+</bean>
+
+<bean id="@@Objeto@@Facade" class="br.com.digicon.sbe.facades.@@Entidade@@Facade">
+	<property name="@@Objeto@@DAO">
+		<ref local="@@Objeto@@DAO" />
+	</property>
+</bean>

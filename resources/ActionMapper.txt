@@ -1,0 +1,236 @@
+/**
+ * 
+ */
+package br.com.digicon.sbe.action;
+
+import static br.com.digicon.framework.util.GeralUtility.isBlankOrNull;
+import static br.com.digicon.sbe.constants.SBEConstants.RETORNO_MESSAGE;
+import static br.com.digicon.sbe.constants.SBEConstants.RETORNO_SUCCESS;
+import static br.com.digicon.sbe.constants.SBEConstants.ROWS;
+import static br.com.digicon.sbe.constants.SBEConstants.VALIDATION_ERRORS;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.SessionAware;
+
+import br.com.digicon.framework.util.FieldErrorMessage;
+import br.com.digicon.sbe.facades.@@Entidade@@Facade;
+import br.com.digicon.sbe.throwable.FacadeException;
+import br.com.digicon.sbe.vo.@@Entidade@@;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+/**
+ * @author Vitor Hugo Oliveira
+ * 
+ */
+public class @@Entidade@@Action extends ActionSupport implements SessionAware {
+
+	private static final Logger LOG = Logger.getLogger(@@Entidade@@Action.class);
+
+	private transient @@Entidade@@Facade @@Objeto@@Facade;
+
+	private @@Entidade@@ @@Objeto@@;
+	private @@PK@@ id;
+	private String paramIDExclusao;
+
+	private Map<String, Object> mapaSessao;
+	private Map<String, Object> mapaRetorno;
+
+	public String obter@@Entidade@@() {
+
+		mapaRetorno = new HashMap<String, Object>();
+		try {
+
+			@@Entidade@@ @@Objeto@@Atlz = get@@Entidade@@Facade().get@@Entidade@@ById(getId());
+
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.TRUE);
+			mapaRetorno.put("@@Objeto@@", @@Objeto@@Atlz);
+
+		} catch (Exception e) {
+			LOG.error("Erro no método obter@@Entidade@@()", e);
+			mapaRetorno.put(RETORNO_MESSAGE, "Erro no método obter@@Entidade@@().<br/>" + e.getMessage());
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.FALSE);
+		}
+
+		return SUCCESS;
+
+	}
+
+	public String lista@@Entidade@@() {
+
+		mapaRetorno = new HashMap<String, Object>();
+
+		try {
+			List<@@Entidade@@> @@Objeto@@s = this.@@Objeto@@Facade.getAll@@Entidade@@();
+
+			mapaRetorno.put(ROWS, @@Objeto@@s);
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.TRUE);
+		} catch (Exception e) {
+			LOG.error("Erro na lista@@Entidade@@()", e);
+			mapaRetorno.put(RETORNO_MESSAGE, "Erro na lista@@Entidade@@().<br/>" + e.getMessage());
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.FALSE);
+		}
+
+		return SUCCESS;
+	}
+
+	private void valida(String origem) {
+
+	}
+
+	public void validateIncluir() {
+		valida("INCLUIR");
+	}
+
+	public String incluir() {
+
+		mapaRetorno = new HashMap<String, Object>();
+		try {
+
+			get@@Entidade@@Facade().insert@@Entidade@@(this.@@Objeto@@);
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.TRUE);
+
+		} catch (FacadeException be) {
+			LOG.info("Erro de regra de negócio (insert@@Entidade@@).", be);
+			mapaRetorno.put(RETORNO_MESSAGE, be.getMessage());
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.FALSE);
+
+		} catch (Exception e) {
+			LOG.error("Erro no método incluir()", e);
+			mapaRetorno.put(RETORNO_MESSAGE, "Erro no método incluir().<br/>" + e.getMessage());
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.FALSE);
+		}
+
+		return SUCCESS;
+	}
+
+	public void validateAlterar() {
+		valida("ALTERAR");
+	}
+
+	public String alterar() {
+
+		mapaRetorno = new HashMap<String, Object>();
+
+		try {
+
+			this.@@Objeto@@Facade.update@@Entidade@@(@@Objeto@@);
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.TRUE);
+
+		} catch (FacadeException be) {
+
+			LOG.info("Erro de regra de negócio (update@@Entidade@@).", be);
+			mapaRetorno.put(RETORNO_MESSAGE, be.getMessage());
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.FALSE);
+
+		} catch (Exception e) {
+			LOG.error("Erro no método alterar()", e);
+			mapaRetorno.put(RETORNO_MESSAGE, "Erro no método alterar().<br/>" + e.getMessage());
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.FALSE);
+		}
+
+		return SUCCESS;
+	}
+
+	public void validateExcluir() {
+
+		List<FieldErrorMessage> listaDeErros = new ArrayList<FieldErrorMessage>();
+
+		if (isBlankOrNull(this.paramIDExclusao)) {
+			listaDeErros.add(new FieldErrorMessage("id@@Entidade@@", "Selecione os registros que deseja excluir."));
+		}
+
+		if (listaDeErros.size() > 0) {
+			mapaRetorno = new HashMap<String, Object>();
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.FALSE);
+			mapaRetorno.put(VALIDATION_ERRORS, listaDeErros);
+			addFieldError("erro", "erro");
+			// o Struts sair por INPUT
+		}
+
+	}
+
+	public String excluir() {
+
+		mapaRetorno = new HashMap<String, Object>();
+
+		try {
+
+			String[] idsStr = this.paramIDExclusao.split(",");
+			@@PK@@ [] ids = new @@PK@@[idsStr.length];
+
+			for (int c = 0; c < idsStr.length; c++) {
+				ids[c] = @@PK@@.valueOf(idsStr[c]);
+			}
+
+			@@Objeto@@Facade.delete@@Entidade@@(ids);
+
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.TRUE);
+		} catch (Exception e) {
+			LOG.error("Erro no método excluir()", e);
+			mapaRetorno.put(RETORNO_MESSAGE, "Erro no método excluir().<br/>" + e.getMessage());
+			mapaRetorno.put(RETORNO_SUCCESS, Boolean.FALSE);
+		}
+
+		return SUCCESS;
+
+	}
+
+	public void setSession(Map<String, Object> mapaSessao) {
+		this.mapaSessao = mapaSessao;
+	}
+
+	public @@Entidade@@Facade get@@Entidade@@Facade() {
+		return @@Objeto@@Facade;
+	}
+
+	public void set@@Entidade@@Facade(@@Entidade@@Facade @@Objeto@@Facade) {
+		this.@@Objeto@@Facade = @@Objeto@@Facade;
+	}
+
+	public @@Entidade@@ get@@Entidade@@() {
+		return @@Objeto@@;
+	}
+
+	public void set@@Entidade@@(@@Entidade@@ @@Objeto@@) {
+		this.@@Objeto@@ = @@Objeto@@;
+	}
+
+	public @@PK@@ getId() {
+		return id;
+	}
+
+	public void setId(@@PK@@ id) {
+		this.id = id;
+	}
+
+	public String getParamIDExclusao() {
+		return paramIDExclusao;
+	}
+
+	public void setParamIDExclusao(String paramIDExclusao) {
+		this.paramIDExclusao = paramIDExclusao;
+	}
+
+	public Map<String, Object> getMapaSessao() {
+		return mapaSessao;
+	}
+
+	public void setMapaSessao(Map<String, Object> mapaSessao) {
+		this.mapaSessao = mapaSessao;
+	}
+
+	public Map<String, Object> getMapaRetorno() {
+		return mapaRetorno;
+	}
+
+	public void setMapaRetorno(Map<String, Object> mapaRetorno) {
+		this.mapaRetorno = mapaRetorno;
+	}
+
+}

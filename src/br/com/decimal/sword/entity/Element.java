@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.decimal.sword.mapper.vo;
+package br.com.decimal.sword.entity;
 
 import java.lang.reflect.Field;
 

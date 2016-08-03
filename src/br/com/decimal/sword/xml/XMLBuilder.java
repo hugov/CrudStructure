@@ -18,10 +18,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/**
- * @author Vitor Hugo Oliveira
- * 
- */
 public class XMLBuilder {
 
 	private Document document;

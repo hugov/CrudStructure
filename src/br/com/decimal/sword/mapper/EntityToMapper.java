@@ -7,6 +7,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import br.com.decimal.sword.entity.Field;
+import br.com.decimal.sword.entity.Mapper;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -25,11 +28,11 @@ public class EntityToMapper {
 	
 	public String getMapper() {
 		
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		
 		List<Mapper> listMapper = carrega();
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, String> map = new HashMap<>();
 		
 		for(Mapper mapper : listMapper) {
 			map.put(mapper.getFrom(), mapper.getTo());
@@ -98,11 +101,11 @@ public class EntityToMapper {
 	
 	public String getMapperIbatis(Field [] fields) {
 		
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		
 		List<Mapper> listMapper = carrega();
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, String> map = new HashMap<>();
 		
 		for(Mapper mapper : listMapper) {
 			map.put(mapper.getFrom(), mapper.getTo());
@@ -119,7 +122,6 @@ public class EntityToMapper {
 		
 		buffer.append(createResultMapStart( resultMap , "br.com.digicon.sbe.vo." + entidade));
 		
-		//Field[] fields = FieldMapper.readField( br.com.digicon.vo.RedeVenda.class );
 		for(Field f : fields) {
 			if(f == null) {
 				continue;
@@ -168,30 +170,30 @@ public class EntityToMapper {
 		
 	}
 	
-	public String createHeader(String nameSpace) {
+	private String createHeader(String nameSpace) {
 		return "\n\n<sqlMap namespace=\"" + nameSpace + "\" >";
 	}
 	
-	public String createResultLine(String columnName, String propertyName, String propertyType) {
+	private String createResultLine(String columnName, String propertyName, String propertyType) {
 		if(propertyName.equals("serialVersionUID"))
 			return "";
 		
 		return "\n\t<result column=\"" + columnName +  "\" property=\"" + propertyName + "\" jdbcType=\"" + propertyType + "\" />";
 	}
 	
-	public String createResultMapStart(String resultName, String className) {
+	private String createResultMapStart(String resultName, String className) {
 		return "<resultMap id=\"" + resultName + "\" class=\"" + className + "\" >";
 	}
 	
-	public String createResultMapEnd() {
+	private String createResultMapEnd() {
 		return "</resultMap>";
 	}
 	
-	public String createFooter() {
+	private String createFooter() {
 		return "</sqlMap>";
 	}
 	
-	public String createSelect(String id, String result, String parameterClass, String content) {
+	private String createSelect(String id, String result, String parameterClass, String content) {
 		String select = "\t<select id=\"" + id + "\" resultMap=\"" + result + "\" parameterClass=\"" + parameterClass + "\">";
 		
 		select += "\n\t\t" + content;
@@ -200,7 +202,7 @@ public class EntityToMapper {
 		return select;
 	}
 	
-	public String createDelete(String parameterClass, String content) {
+	private String createDelete(String parameterClass, String content) {
 		String delete = "\t<delete id=\"deleteById\" parameterClass=\"" + parameterClass + "\">";
 		
 		delete += "\n\t\t" + content;
@@ -209,7 +211,7 @@ public class EntityToMapper {
 		return delete;
 	}
 	
-	public String createInsert(String parameterClass, String content) {
+	private String createInsert(String parameterClass, String content) {
 		String delete = "\t<insert id=\"insert\" parameterClass=\"" + parameterClass + "\">";
 		
 		delete += "\n\t\t" + content;
@@ -218,7 +220,7 @@ public class EntityToMapper {
 		return delete;
 	}
 
-	public String createUpdate(String parameterClass, String content) {
+	private String createUpdate(String parameterClass, String content) {
 		String delete = "\t<update id=\"update\" parameterClass=\"" + parameterClass + "\">";
 		
 		delete += "\n\t\t" + content;
@@ -227,12 +229,12 @@ public class EntityToMapper {
 		return delete;
 	}
 
-	public List<Mapper> carrega() {
+	private List<Mapper> carrega() {
 		XStream stream = new XStream(new DomDriver());
 		stream.alias("Mappers", List.class);
 		stream.alias("Mapper", Mapper.class);
 		
-		return (List<Mapper>) stream.fromXML(new File("./ClassToJdbcType.xml"));
+		return (List<Mapper>) stream.fromXML(new File("resources/ClassToJdbcType.xml"));
 	}
 
 }

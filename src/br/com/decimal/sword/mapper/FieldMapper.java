@@ -3,6 +3,8 @@
  */
 package br.com.decimal.sword.mapper;
 
+import br.com.decimal.sword.entity.Field;
+
 
 /**
  * @author Vitor Hugo Oliveira

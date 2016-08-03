@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
-import br.com.decimal.sword.mapper.Field;
+import br.com.decimal.sword.entity.Field;
 import br.com.decimal.sword.service.SwordService;
 
 /**
@@ -42,7 +42,7 @@ public class Principal extends JFrame {
 	private static final int TIPO_ATRIBUTO = 2;
 	private static final int PK_BD = 3;
 	
-	List<TableCellEditor> editors = new ArrayList<TableCellEditor>(4);
+	private List<TableCellEditor> editors = new ArrayList<TableCellEditor>(4);
 	
 	private JPanel selecioneTabelaPanel;
 	private JComboBox<String> selecioneTabelaComboBox;
@@ -76,7 +76,7 @@ public class Principal extends JFrame {
 		selecioneTabelaPanel.setBorder(new TitledBorder("Selecione a tabela"));
 		selecioneTabelaPanel.setBounds(20, 20, 750, 100);
 		
-		selecioneTabelaComboBox = new JComboBox<String>();
+		selecioneTabelaComboBox = new JComboBox<>();
 		selecioneTabelaComboBox.setBounds(40, 40, 450, 25);
 		
 		fillComboBox(selecioneTabelaComboBox , swordService.listTableName());

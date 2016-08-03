@@ -1,0 +1,15 @@
+package br.com.digicon.sbe.dao;
+
+import br.com.digicon.sbe.vo.@@Entidade@@;
+
+/**
+ * @author Vitor Hugo Oliveira(voliveira@digicon.com.br)
+ *
+ */
+public class @@Entidade@@DAO extends BasicDaoIbatis<@@Entidade@@, @@PK@@> {
+
+	public @@Entidade@@DAO() {
+		super(@@Entidade@@.class);
+	}
+	
+}

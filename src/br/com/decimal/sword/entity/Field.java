@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.decimal.sword.mapper;
+package br.com.decimal.sword.entity;
 
 
 /**

@@ -3,6 +3,10 @@
  */
 package br.com.decimal.sword.mapper;
 
+import org.apache.log4j.Logger;
+
+import br.com.decimal.sword.entity.Field;
+
 
 /**
  * @author Vitor Hugo Oliveira
@@ -10,8 +14,10 @@ package br.com.decimal.sword.mapper;
  */
 public class SQLBuilder {
 	
+	private static final Logger LOGGER = Logger.getLogger(SQLBuilder.class);
+	
 	public static String createSelect(Field [] fields, boolean hasFilter) {
-		StringBuffer buffer = new StringBuffer( "SELECT " );
+		StringBuilder buffer = new StringBuilder( "SELECT " );
 		
 		for(int index = 0 ; index < fields.length; index++) {
 			buffer.append(fields[index].getColumnName());
@@ -44,7 +50,7 @@ public class SQLBuilder {
 	}
 	
 	public static String createDelete(Field [] fields) {
-		StringBuffer buffer = new StringBuffer( "DELETE FROM " );
+		StringBuilder buffer = new StringBuilder( "DELETE FROM " );
 		buffer.append(fields[0].getTableName());
 		
 		for(int index = 0 ; index < fields.length; index++) {
@@ -62,11 +68,11 @@ public class SQLBuilder {
 	}
 	
 	public static String createInsert(Field [] fields) {
-		StringBuffer buffer = new StringBuffer( "INSERT INTO " );
+		StringBuilder buffer = new StringBuilder( "INSERT INTO " );
 		buffer.append(fields[0].getTableName());
 		
-		StringBuffer coluna = new StringBuffer();
-		StringBuffer atributo = new StringBuffer();
+		StringBuilder coluna = new StringBuilder();
+		StringBuilder atributo = new StringBuilder();
 		for(int index = 0 ; index < fields.length; index++) {
 			coluna.append(fields[index].getColumnName());
 			atributo.append("#" + fields[index].getFieldName() + "#");
@@ -92,7 +98,7 @@ public class SQLBuilder {
 	}
 	
 	public static String createUpdate(Field [] fields) {
-		StringBuffer buffer = new StringBuffer( "UPDATE " );
+		StringBuilder buffer = new StringBuilder( "UPDATE " );
 		buffer.append(fields[0].getTableName());
 		buffer.append(" SET ");
 		
@@ -144,19 +150,20 @@ public class SQLBuilder {
 		f3.setColumnName("DT_VIGENCIA");
 		fields[2] = f3;
 		
-		System.out.println( createSelect( fields , false ) );
 		
-		System.out.println("\n");
-		System.out.println( createSelect( fields , true ) );
+		LOGGER.info( createSelect( fields , false ) );
 		
-		System.out.println("\n");
-		System.out.println( createDelete( fields ) );
+		LOGGER.info("\n");
+		LOGGER.info( createSelect( fields , true ) );
 		
-		System.out.println("\n");
-		System.out.println( createInsert( fields ) );
+		LOGGER.info("\n");
+		LOGGER.info( createDelete( fields ) );
 		
-		System.out.println("\n");
-		System.out.println( createUpdate( fields ) );
+		LOGGER.info("\n");
+		LOGGER.info( createInsert( fields ) );
+		
+		LOGGER.info("\n");
+		LOGGER.info( createUpdate( fields ) );
 		
 	}
 

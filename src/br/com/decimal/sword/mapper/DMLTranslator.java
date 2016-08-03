@@ -14,14 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Administrador
- * 
- */
 public class DMLTranslator {
 	
-	private static final int CONN_MYSQL = 0;
-	private static final int CONN_ORACLE = 1;
 	private boolean isOracle = true;
 
 	public static void main(String[] args) {
@@ -49,7 +43,7 @@ public class DMLTranslator {
 	}
 	
 	public List<String> getAllTables()  {
-		List<String> allTables = new ArrayList<String>();
+		List<String> allTables = new ArrayList<>();
 		
         try {
 
@@ -121,29 +115,4 @@ public class DMLTranslator {
 		return columns;
 	}
 	
-	public String decodeType(int type) {
-		String result = "";
-		
-		switch (type) {
-		
-		case 4:
-			result = "INTEGER";
-			break;
-		
-		case 93:
-			result = "TIMESTAMP";
-			break;
-		
-		case -5:
-			result = "BIGINT";
-			break;
-
-		default:
-			result = type + " - Decode desconhecido acrescente este novo tipo.";
-			break;
-		}
-		
-		return result;
-	}
-
 }

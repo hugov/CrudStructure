@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+
+	<settings useStatementNamespaces="true"
+			   cacheModelsEnabled="true"
+		        enhancementEnabled="true"
+				lazyLoadingEnabled="true"
+				maxRequests="128"
+				maxSessions="20"
+				maxTransactions="20" />
+
+				<!-- defaultStatementTimeout="180"  -->
+	<!-- Banco SBE -->
+
+	<sqlMap resource="br/com/digicon/sbe/ibatis/emissaoTrinitIbatis.xml" />
+	<sqlMap resource="br/com/digicon/sbe/ibatis/emissaoTrinitIbatis.xml" />
+
+</sqlMapConfig>

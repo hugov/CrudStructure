@@ -37,14 +37,14 @@ public class PlaceHolder {
 		
 		PlaceHolder placeHolder = new PlaceHolder();
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("@@Entidade@@", "RedeVenda");
 		map.put("@@PK@@", "Long");
 		map.put("@@Objeto@@", "redeVenda");
 		map.put("@@Field@@", "");
 		map.put("@@GetterAndSetter@@", "");
 		
-		String fileContent = placeHolder.replace(map, "./VoMapper.txt");
+		String fileContent = placeHolder.replace(map, "resources/VoMapper.txt");
 		System.out.println( fileContent );
 		FileUtil.write("RedeVenda.java", fileContent, false);
 		
