@@ -13,10 +13,6 @@ import br.com.decimal.sword.entity.Mapper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-/**
- * @author Vitor Hugo Oliveira
- *
- */
 public class MapperContext {
 
 	private static Map<String, String> repository = new HashMap<>();

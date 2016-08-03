@@ -108,6 +108,8 @@ public class DMLTranslator {
 			for(int numeroColuna = 1 ; numeroColuna <= numberOfColumns; numeroColuna++) {
 				columns[ numeroColuna - 1 ] = rsmd.getColumnName(numeroColuna);
 			}
+			stmt.close();
+			rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

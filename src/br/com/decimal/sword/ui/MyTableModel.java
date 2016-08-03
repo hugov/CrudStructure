@@ -1,14 +1,7 @@
-/**
- * 
- */
 package br.com.decimal.sword.ui;
 
 import javax.swing.table.DefaultTableModel;
 
-/**
- * @author Administrador
- *
- */
 public class MyTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = 5753014079278557112L;
@@ -19,11 +12,9 @@ public class MyTableModel extends DefaultTableModel {
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		Class clazz = String.class;
-		switch (columnIndex) {
-		case 3:
+		Class<?> clazz = String.class;
+		if(columnIndex == 3) {
 			clazz = Boolean.class;
-			break;
 		}
 		return clazz;
 	}
@@ -37,19 +28,5 @@ public class MyTableModel extends DefaultTableModel {
 
 		return false;
 	}
-
-//	@Override
-//	public void setValueAt(Object aValue, int row, int column) {
-//		if (aValue instanceof Boolean && column == 3) {
-//			System.out.println(aValue);
-//			Vector rowData = (Vector)getDataVector().get(row);
-//			rowData.set(3, Boolean.valueOf(aValue.toString()));
-//			fireTableCellUpdated(row, column);
-//		} else {
-//			System.out.println(aValue);
-//			fireTableCellUpdated(row, column);
-//		}
-//		
-//	}
 
 }
